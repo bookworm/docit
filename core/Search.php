@@ -18,7 +18,7 @@ class Search
    *
    * type: String
    */  
-  private static $classRegex = '/^\s*(?:abstract\s+)?(?:class|interface)\s+(\w+?)\s+(?:.*?)\s*{/m'; 
+  private static $classRegex = '~^\s*((?:namespace)\s+(\w+);)?\s*(?:abstract\s+|final\s+)?(?:class|interface)\s+(\w+)~mi'; 
   
   /**
    * Holds as list of the found classes.
@@ -74,13 +74,11 @@ class Search
   {
     if(file_exists($file)) 
     {
-      $contents = file_get_contents($file);
-
-      $matches = array();
-      preg_match_all(self::$classRegex, $contents, $matches); 
-
-      if(!empty($matches[0]))
-        return array($file => $matches[1]);
+      $parsed_file = new \docit\parsers\File($file);   
+      $classes = $parsed_file->getClasses();
+      
+      if(!empty($classes))
+         return array($file => $classes);
       else
         return null;
     } 

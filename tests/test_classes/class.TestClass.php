@@ -1,6 +1,6 @@
 <?php   
 
-# namespace docit\bob;
+namespace docib;
 
 class TestClass {
     const A_CONSTANT = 12;

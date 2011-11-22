@@ -1,0 +1,40 @@
+{
+    "docib\\TestClass":{
+        "methods":[
+            {
+                "name":"test",
+                "docblock":"Desc With another line.\nDesc line 2.",
+                "parameters":[
+                    {
+                        "name":"param"
+                    },
+                    {
+                        "name":"param2"
+                    }
+                ]
+            },
+            {
+                "name":"test_private",
+                "docblock":"",
+                "parameters":[
+                    
+                ]
+            },
+            {
+                "name":"just_a_func",
+                "docblock":"",
+                "parameters":[
+                    
+                ]
+            }
+        ],
+        "name":"docib\\TestClass",
+        "namespace":"docib",
+        "constants":[
+            {
+                "name":"A_CONSTANT",
+                "value":12
+            }
+        ]
+    }
+}
