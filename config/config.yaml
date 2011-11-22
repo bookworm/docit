@@ -1,3 +1,4 @@
 dir: '/tests/test_classes'   
 output_dir: '/out'    
 markdown: false
+namespace_prefix: 'docit'

@@ -19,7 +19,9 @@ class Parser
    *
    * type: Array
    */
-  public $classList = array();   
+  public $classList = array();     
+  
+  public $containers = array();
   
   /**
    * Constructor
@@ -88,16 +90,59 @@ class Parser
    * Return: Array. Array of classes + classInfo. 
    */     
   public function getAllClassInfo() 
-  {
-    $return = array();
+  {               
+    $return = array();    
+    $this->buildContainers();
     foreach($this->classList as $fileLocation => $classNames) 
-    {
+    {       
       foreach($classNames as $className) {
         $return[$className] = $this->getClassInfo($className);
       } 
     }
     return $return;   
-  }    
+  }  
+  
+  public function buildContainers()
+  {            
+    $docit = Docit::getInstance();
+    $array = $this->containers;
+    
+    foreach($this->classList as $fileLocation => $classNames) 
+    {        
+      $fileLocal = str_replace(basename($fileLocation), '', $fileLocation);
+      $fileLocal = rtrim($fileLocal, '/');     
+      $keys = explode('/', str_replace($docit->baseDir() . '/', '', $fileLocal));   
+      
+      $this->containers = $this->addContainers($keys);
+      
+      foreach($classNames as $className) 
+      {
+        $class     = new \docit\parser\Klass($className);
+        $namespace = $class->getNamespaceName();     
+        $keys      = explode("\\", str_replace($docit->config->namespace_prefix . '\\', '', $namespace));
+        if(!empty($keys[0])) $this->containers = $this->addContainers($keys);
+      }    
+    }       
+    
+    var_dump($this->containers);
+  }
+  
+  public function addContainers($keys)
+  {
+    $result = $this->containers;
+
+    $ref = &$result;
+    foreach($keys as $p) 
+    {
+      if(!isset($ref[$p])) 
+        $ref[$p] = array(); 
+        
+      $ref = &$ref[$p]; 
+    }
+    $ref = null;  
+    
+    return $result;
+  }  
   
   public function parseClasses($value='')
   {
