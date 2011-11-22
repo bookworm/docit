@@ -212,11 +212,12 @@ class Comment
    * Return: self
    */
   public function parse()
-  {          
+  {              
+    $docit = Docit::getInstance();
     if(empty($this->parsed))
     {                
       $this->parseDesc();       
-      $this->desc = Markdown($this->desc);      
+      if($docit->config->markdown == true) $this->desc = Markdown($this->desc);      
       $lineReset = $this->line; 
          
       while($this->line < count($this->docblock) - 1)
@@ -233,7 +234,7 @@ class Comment
       $this->spyc = new Spyc;     
       $this->parsed = $this->spyc->load((string) $this);        
     
-      # array_walk_recursive($this->parsed, array($this, 'parseMarkdown'));   
+      if($docit->config->markdown == true)  array_walk_recursive($this->parsed, array($this, 'parseMarkdown'));   
     } 
     else
       return $this;
