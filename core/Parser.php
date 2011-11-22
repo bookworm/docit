@@ -93,7 +93,6 @@ class Parser
   {               
     $return = array();    
     $this->buildContainers();     
-    var_dump($this->containers);
     return $this->containers;   
   } 
   
