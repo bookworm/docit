@@ -92,15 +92,34 @@ class Parser
   public function getAllClassInfo() 
   {               
     $return = array();    
-    $this->buildContainers();
-    foreach($this->classList as $fileLocation => $classNames) 
-    {       
-      foreach($classNames as $className) {
-        $return[$className] = $this->getClassInfo($className);
-      } 
+    $this->buildContainers();     
+    var_dump($this->containers);
+    return $this->containers;   
+  } 
+  
+  public function addCLass($className, $keys)
+  {   
+    $class = new \docit\parser\Klass($className);     
+    
+    if(strpos($classname, '\\'))          
+    {
+      $keys = explode("\\", str_replace($docit->config->namespace_prefix . '\\', '', $classname));      
+      $className = array_pop($keys);
     }
-    return $return;   
-  }  
+ 
+    if(!empty($keys))
+    {     
+      $elem = &$this->containers;
+      foreach($keys as $p)
+      {
+        $elem = &$elem[$key];
+      } 
+      
+      $elem['classes'][] = $class;
+    }
+    else
+      $this->containers['classes'] = $class;
+  } 
   
   public function buildContainers()
   {            
@@ -113,22 +132,18 @@ class Parser
       $fileLocal = rtrim($fileLocal, '/');     
       $keys = explode('/', str_replace($docit->baseDir() . '/', '', $fileLocal));   
       
-      $this->containers = $this->addContainers($keys);
-      
+      $this->containers = $this->addContainers($keys);    
+
       foreach($classNames as $className) 
-      {
-        $class     = new \docit\parser\Klass($className);
-        $namespace = $class->getNamespaceName();     
-        $keys      = explode("\\", str_replace($docit->config->namespace_prefix . '\\', '', $namespace));
-        if(!empty($keys[0])) $this->containers = $this->addContainers($keys);
+      {  
+        $this->addClass($className, $keys);
       }    
     }       
-    
-    var_dump($this->containers);
   }
   
   public function addContainers($keys)
-  {
+  {           
+    if(empty($keys)) return; 
     $result = $this->containers;
 
     $ref = &$result;
