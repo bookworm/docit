@@ -23,7 +23,9 @@ class TestClass {
      *
      * Parameters:
      *   - $param, string. The class name.
-     *   - $param2, string. The property name.
+     *   - $paramtwo, string. The property name.
+     *
+     * returns: bob
      */
     public function test($param, $param2 = 'default') {
 

@@ -12,7 +12,7 @@ abstract class App
   public function __construct($parsed_args = null) 
   {                  
     $this->docit = Docit::getInstance();
-    $this->docit->init();
+    $this->docit->init();    
     
     if(is_null($parsed_args)) {
       global $argv;
@@ -20,12 +20,13 @@ abstract class App
     }
 
     $this->args = $parsed_args;
-    $this->docit->config->setProps($this->args);
+    $this->docit->config->setProps($this->args);        
+    $this->docit->config->init();
     $this->initialize();         
   }
 
   protected function initialize() 
-  {
+  {              
     if(isset($this->args['h']) || isset($this->args['help'])) {
       $this->help();
       exit;

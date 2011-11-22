@@ -49,7 +49,6 @@ class Docit
    */
   public $config;       
   
-  public $configPath;  
   public $init = false;  
     
   /**
@@ -101,6 +100,11 @@ class Docit
   public static function baseDir() 
   {
     return realpath(dirname(__FILE__) . '/..');
+  }    
+  
+  public static function configPath() 
+  {
+    return realpath(dirname(__FILE__) . '/..') . DS . 'config' .  DS . 'config.yaml';
   }
   
 // ------------------------------------------------------------------------  

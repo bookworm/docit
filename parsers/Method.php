@@ -84,9 +84,20 @@ class Method extends ReflectionMethod
   {
     $return = array();
     foreach(parent::getParameters() as $parameter) 
-    {
-      $return[$parameter->name] =
-        new Parameter(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
+    {               
+      if($paramProps = $this->docblock->hasParam($parameter->getName()))     
+      {
+          $return[$parameter->name] =
+            new Parameter(array($this->getDeclaringClass()->getName(), 
+              $this->getName()), $parameter->getName(), 
+              $paramProps
+            );
+      }
+      else
+      {
+        $return[$parameter->name] =
+          new Parameter(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
+      }
     }
     return $return; 
   }     
@@ -132,9 +143,9 @@ class Method extends ReflectionMethod
    * Return: Object
    */ 
   public function templateInfo() 
-  {
+  {                          
     $info = array();
-    $info['name'] = $this->getName(); 
+    $info['name'] = $this->getName();    
     # $info->short_nmae = $this->getShortName();   
     # $info->source = $this->getSource();
     

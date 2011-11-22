@@ -233,7 +233,7 @@ class Comment
       $this->spyc = new Spyc;     
       $this->parsed = $this->spyc->load((string) $this);        
     
-      array_walk_recursive($this->parsed, array($this, 'parseMarkdown'));   
+      # array_walk_recursive($this->parsed, array($this, 'parseMarkdown'));   
     } 
     else
       return $this;
@@ -275,7 +275,7 @@ class Comment
    *   - false. If failed.
    */
   public function parseYAML()
-  {    
+  {                  
     while($this->consumeUntilYAML(false) && $this->line < count($this->docblock) - 1)
     {              
       $this->inSub = true; 
@@ -453,5 +453,24 @@ class Comment
       unset($newArray[$i]);
     }                   
     return implode("\n", $newArray);           
-  }
+  }    
+  
+  public function hasParam($paramName)
+  {                             
+    if(isset($this->parsed['Parameters'])) 
+    {
+      foreach($this->parsed['Parameters'] as $param)
+      {       
+        $name = $param['name'];        
+        str_replace('$', '', $name);  
+        if($param['name'] == $name)
+          return $param;  
+        else
+          return false;      
+      }
+    }
+    else
+      return false;  
+    return false;
+  }     
 }

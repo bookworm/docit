@@ -14,7 +14,39 @@ use ReflectionParameter;
  * based_on: https://github.com/samwho/PHP-Docgen
  */
 class Parameter extends ReflectionParameter 
-{  
+{     
+  public $props = array(); 
+  public $gotDocs = false;
+  
+  public function __construct($function, $parameter, $props)
+  {             
+    parent::__construct($function, $parameter);
+                               
+    if(empty($this->props)) $this->gotDocs = true;
+    $this->setProps($props);
+  }  
+  
+  public function __get($name)
+  {     
+    if(isset($this->props[$name]))
+      return $this->props[$name];
+    else
+      return false;
+  }       
+  
+  public function __set($name, $value)
+  {    
+    $this->props[$name] = $value;
+    return $this;
+  } 
+  
+  public function setProps($props)
+  {      
+    $this->props = array_merge($this->props, $props);
+    
+    return $this;
+  } 
+  
 // ------------------------------------------------------------------------
 
   /**
@@ -24,9 +56,10 @@ class Parameter extends ReflectionParameter
    */    
   public function templateInfo() 
   {
-    $info = array();
-
-    $info['name']                       = $this->getName();
+    $info = array();   
+    
+    $info['name']       = $this->name;   
+    # $info["docblock"]   = $this->docblock->desc;
     # $info['position']                   = $this->getPosition();
     # $info['is_array']                   = $this->isArray();
     # $info['is_optional']                = $this->isOptional();
@@ -38,9 +71,9 @@ class Parameter extends ReflectionParameter
     # $info['function_name']              = $this->getDeclaringFunction()->name;
     # $info['class_type']                 = $this->getClass() ? $this->getClass()->getName() : null;
 
-    if ($this->isOptional() && $this->getDeclaringClass()->isUserDefined()) {
-      $info['default_value'] = $this->getDefaultValue();
-    }
+    # if ($this->isOptional() && $this->getDeclaringClass()->isUserDefined()) {
+    #   $info['default_value'] = $this->getDefaultValue();
+    # }
 
     return $info;   
   } 

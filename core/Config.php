@@ -12,11 +12,11 @@ class Config
   public $spyc;
   
   public function init()
-  {     
+  {                   
     $this->spyc = new \Spyc;    
     $docit = Docit::getInstance();
-    $this->config = $this->spyc->load((string) file_get_contents($docit->configPath));
-    $this->dir = $this->config['dir'];
+    $this->config = $this->spyc->load(file_get_contents($docit->configPath())); 
+    $this->dir = $this->config['dir'];   
   }   
   
   public static function getInstance() 

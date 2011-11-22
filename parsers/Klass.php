@@ -248,15 +248,16 @@ class Klass extends ReflectionClass
   {
     $info = array();
 
-    $info["methods"]         = $this->getMethodTemplateInfo();
-    # $info["constants"]       = $this->getConstantsTemplateInfo();
+    $info["methods"]         = $this->getMethodTemplateInfo();      
+    $info["name"]            = $this->getName();    
+    $info["namespace"]       = $this->getNamespaceName();
+    $info["constants"]       = $this->getConstantsTemplateInfo();
     # $info["docblock"]        = $this->getDocBlockRaw();
     # $info["tags"]            = $this->getDocTags();
     # $info["lines_of_code"]   = $this->linesOfCode();
     # $info["start_line"]      = $this->getStartLine();
     # $info["end_line"]        = $this->getEndLine();
     # $info["file_name"]       = $this->getFileName();
-    $info["name"]            = $this->getName();
     # $info["short_name"]      = $this->getShortName();
     # $info["is_abstract"]     = $this->isAbstract();
     # $info["is_final"]        = $this->isFinal();
@@ -266,7 +267,6 @@ class Klass extends ReflectionClass
     # $info["is_iterateable"]  = $this->isIterateable();
     # $info["is_user_defined"] = $this->isUserDefined();
     # $info["parent"]          = $this->getParentClass() ? $this->getParentClass()->getName() : null;
-    # $info["namespace"]       = $this->getNamespaceName();
     # $info["interfaces"]      = $this->getInterfaceNames();
     # $info["modifiers"]       = $this->getModifierString();
     # $info["properties"]      = $this->getPropertiesTemplateInfo();
