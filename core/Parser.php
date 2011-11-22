@@ -98,12 +98,13 @@ class Parser
   } 
   
   public function addCLass($className, $keys)
-  {   
+  {          
+    $docit = Docit::getInstance();
     $class = new \docit\parser\Klass($className);     
     
-    if(strpos($classname, '\\'))          
+    if(strpos($className, '\\'))          
     {
-      $keys = explode("\\", str_replace($docit->config->namespace_prefix . '\\', '', $classname));      
+      $keys = explode("\\", str_replace($docit->config->namespace_prefix . '\\', '', $className));      
       $className = array_pop($keys);
     }
  
@@ -112,7 +113,7 @@ class Parser
       $elem = &$this->containers;
       foreach($keys as $p)
       {
-        $elem = &$elem[$key];
+        $elem = &$elem[$p];
       } 
       
       $elem['classes'][] = $class;

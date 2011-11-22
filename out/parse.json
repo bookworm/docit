@@ -1,40 +1,46 @@
 {
-    "docib\\TestClass":{
-        "methods":[
-            {
-                "name":"test",
-                "docblock":"Desc With another line.\nDesc line 2.",
-                "parameters":[
-                    {
-                        "name":"param"
+    "tests":{
+        "test_classes":{
+            "classes":[
+                {
+                    "docblock":{
+                        "docblock":[
+                            
+                        ],
+                        "line":0,
+                        "yamlLine":0,
+                        "inYAML":false,
+                        "inSub":false,
+                        "desc":"",
+                        "title":"",
+                        "tabSpaceSize":2,
+                        "tabCount":0,
+                        "hookName":null,
+                        "types":[
+                            "integer",
+                            "int",
+                            "boolean",
+                            "bool",
+                            "array",
+                            "string",
+                            "obj",
+                            "object",
+                            "resource"
+                        ],
+                        "markdownTypes":[
+                            "desc",
+                            "descriptioon"
+                        ],
+                        "descEndPos":0,
+                        "paramType":"",
+                        "parsed":[
+                            
+                        ],
+                        "spyc":null
                     },
-                    {
-                        "name":"param2"
-                    }
-                ]
-            },
-            {
-                "name":"test_private",
-                "docblock":"",
-                "parameters":[
-                    
-                ]
-            },
-            {
-                "name":"just_a_func",
-                "docblock":"",
-                "parameters":[
-                    
-                ]
-            }
-        ],
-        "name":"docib\\TestClass",
-        "namespace":"docib",
-        "constants":[
-            {
-                "name":"A_CONSTANT",
-                "value":12
-            }
-        ]
+                    "name":"TestClass"
+                }
+            ]
+        }
     }
 }

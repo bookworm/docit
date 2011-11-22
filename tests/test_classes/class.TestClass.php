@@ -1,7 +1,5 @@
 <?php   
 
-namespace docib;
-
 class TestClass {
     const A_CONSTANT = 12;
 
