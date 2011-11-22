@@ -11,7 +11,7 @@ use ReflectionClass;
  * author:      Ken Erickson http://kerickson.me
  * copyright:   Copyright 2009 - 2011 Design BreakDown, LLC.
  * license:     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2    
- * inspired_by: https://github.com/samwho/PHP-Docgen
+ * based_on: https://github.com/samwho/PHP-Docgen
  */
 class Klass extends ReflectionClass
 {    
@@ -33,7 +33,7 @@ class Klass extends ReflectionClass
   public function __construct($class)
   {          
     parent::__construct($class);           
-    $this->docblock = new CommentParser(parent::getDocComment()); 
+    $this->docblock = new Comment(parent::getDocComment()); 
   }      
     
 // ------------------------------------------------------------------------
@@ -45,7 +45,7 @@ class Klass extends ReflectionClass
    */
   public function getDocBlockRaw()
   {
-    return ParserUtils::parseDocBlock(parent::getDocComment());
+    return \docit\util\Parser::parseDocBlock(parent::getDocComment());
   }   
   
 // ------------------------------------------------------------------------
@@ -72,7 +72,7 @@ class Klass extends ReflectionClass
     $methods = parent::getMethods();  
     
     foreach ($methods as $key=>$method) {
-      $methods[$key] = new MethodParser($method->class, $method->name);
+      $methods[$key] = new Method($method->class, $method->name);
     }
 
     return $methods;    
@@ -249,28 +249,28 @@ class Klass extends ReflectionClass
     $info = array();
 
     $info["methods"]         = $this->getMethodTemplateInfo();
-    $info["constants"]       = $this->getConstantsTemplateInfo();
-    $info["docblock"]        = $this->getDocBlockRaw();
-    $info["tags"]            = $this->getDocTags();
-    $info["lines_of_code"]   = $this->linesOfCode();
-    $info["start_line"]      = $this->getStartLine();
-    $info["end_line"]        = $this->getEndLine();
-    $info["file_name"]       = $this->getFileName();
+    # $info["constants"]       = $this->getConstantsTemplateInfo();
+    # $info["docblock"]        = $this->getDocBlockRaw();
+    # $info["tags"]            = $this->getDocTags();
+    # $info["lines_of_code"]   = $this->linesOfCode();
+    # $info["start_line"]      = $this->getStartLine();
+    # $info["end_line"]        = $this->getEndLine();
+    # $info["file_name"]       = $this->getFileName();
     $info["name"]            = $this->getName();
-    $info["short_name"]      = $this->getShortName();
-    $info["is_abstract"]     = $this->isAbstract();
-    $info["is_final"]        = $this->isFinal();
-    $info["is_instantiable"] = $this->isInstantiable();
-    $info["is_interface"]    = $this->isInterface();
-    $info["is_internal"]     = $this->isInternal();
-    $info["is_iterateable"]  = $this->isIterateable();
-    $info["is_user_defined"] = $this->isUserDefined();
-    $info["parent"]          = $this->getParentClass() ? $this->getParentClass()->getName() : null;
-    $info["namespace"]       = $this->getNamespaceName();
-    $info["interfaces"]      = $this->getInterfaceNames();
-    $info["modifiers"]       = $this->getModifierString();
-    $info["properties"]      = $this->getPropertiesTemplateInfo();
-    $info['source']          = $this->getSource();
+    # $info["short_name"]      = $this->getShortName();
+    # $info["is_abstract"]     = $this->isAbstract();
+    # $info["is_final"]        = $this->isFinal();
+    # $info["is_instantiable"] = $this->isInstantiable();
+    # $info["is_interface"]    = $this->isInterface();
+    # $info["is_internal"]     = $this->isInternal();
+    # $info["is_iterateable"]  = $this->isIterateable();
+    # $info["is_user_defined"] = $this->isUserDefined();
+    # $info["parent"]          = $this->getParentClass() ? $this->getParentClass()->getName() : null;
+    # $info["namespace"]       = $this->getNamespaceName();
+    # $info["interfaces"]      = $this->getInterfaceNames();
+    # $info["modifiers"]       = $this->getModifierString();
+    # $info["properties"]      = $this->getPropertiesTemplateInfo();
+    # $info['source']          = $this->getSource();
 
     return $info;     
   }

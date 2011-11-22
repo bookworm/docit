@@ -1,6 +1,7 @@
 <?php
-namespace docit;         
-use docit; 
+namespace docit\parser;         
+use docit\core;
+use docit\parser; 
 use ReflectionProperty;
    
 /**
@@ -10,7 +11,7 @@ use ReflectionProperty;
  * author:      Ken Erickson http://kerickson.me
  * copyright:   Copyright 2009 - 2011 Design BreakDown, LLC.
  * license:     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2    
- * inspired_by: https://github.com/samwho/PHP-Docgen
+ * based_on: https://github.com/samwho/PHP-Docgen
  */
 class Property extends ReflectionProperty 
 { 
@@ -33,7 +34,7 @@ class Property extends ReflectionProperty
   public function __construct($class, $name)
   {          
     parent::__construct($class, $name);    
-    $this->docblock = new CommentParser(parent::getDocComment()); 
+    $this->docblock = new Comment(parent::getDocComment()); 
   }      
   
 // ------------------------------------------------------------------------
@@ -72,12 +73,12 @@ class Property extends ReflectionProperty
     $info = array();
 
     $info["name"]            = $this->getName();
-    $info["modifiers"]       = implode(' ', Reflection::getModifierNames($this->getModifiers()));
-                               $this->setAccessible(true);
-    $info["value"]           = $this->getValue($this);
-    $info["docblock"]        = $this->getDocCommentWithoutTags();
-    $info["tags"]            = $this->getDocTags();
-    $info['declaring_class'] = $this->getDeclaringClass()->getName();
+    # $info["modifiers"]       = implode(' ', Reflection::getModifierNames($this->getModifiers()));
+    #                            $this->setAccessible(true);
+    # $info["value"]           = $this->getValue($this);
+    # $info["docblock"]        = $this->getDocCommentWithoutTags();
+    # $info["tags"]            = $this->getDocTags();
+    # $info['declaring_class'] = $this->getDeclaringClass()->getName();
 
     return $info; 
   }     

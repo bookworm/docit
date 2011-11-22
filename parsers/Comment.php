@@ -2,7 +2,9 @@
 namespace docit\parser;   
 use docit\core; 
 use docit\parser;
-use Spyc;
+use Spyc;     
+
+require_once '..' . DS . 'vendor' . DS . 'lib' . DS . 'Markdown.php';
  
 /**
  * Parses a Doc Block.
@@ -11,7 +13,7 @@ use Spyc;
  * author:      Ken Erickson http://kerickson.me
  * copyright:   Copyright 2009 - 2011 Design BreakDown, LLC.
  * license:     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2    
- * inspired_by: https://github.com/samwho/PHP-Docgen
+ * based_on: https://github.com/samwho/PHP-Docgen
  */
 class Comment
 {   
@@ -169,17 +171,19 @@ class Comment
    * Return: self
    */
   public function __construct($docblock)
-  {
-    $string = preg_replace('#^(\s*/\*\*|\s*\*+/|\s+\* ?)#m', '', $docblock);
+  {       
+    if(!empty($docblock))
+    {
+      $string = preg_replace('#^(\s*/\*\*|\s*\*+/|\s+\* ?)#m', '', $docblock);
 
-    //fix new lines 
-    $string = trim($string);   
-    $string = str_replace("\r\n", "\n", $string);
+      //fix new lines 
+      $string = trim($string);   
+      $string = str_replace("\r\n", "\n", $string);
     
-    $this->docblock = explode("\n", $string);   
-    unset($string);    
-        
-    $this->parse();
+      $this->docblock = explode("\n", $string);  
+      unset($string);  
+      $this->parse();     
+    } 
   }      
   
 // ------------------------------------------------------------------------  
@@ -208,26 +212,31 @@ class Comment
    * Return: self
    */
   public function parse()
-  {      
-    $this->parseDesc(); 
-    $this->desc = Markdown($this->desc); 
-    $lineReset = $this->line; 
+  {          
+    if(empty($this->parsed))
+    {                
+      $this->parseDesc();       
+      $this->desc = Markdown($this->desc);      
+      $lineReset = $this->line; 
          
-    while($this->line < count($this->docblock) - 1)
-    {         
-      if(method_exists($this, 'parse'.'_'.$this->hookName))            
-      {      
-        $this->line++;     
-        $this->parseYAML();  
-      }
-      else 
-        $this->line++;     
-    }  
+      while($this->line < count($this->docblock) - 1)
+      {         
+        if(method_exists($this, 'parse'.'_'.$this->hookName))            
+        {      
+          $this->line++;     
+          $this->parseYAML();  
+        }
+        else 
+          $this->line++;     
+      }  
              
-    $this->spyc = new Spyc; 
-    $this->parsed = $this->spyc->load((string) $this);
+      $this->spyc = new Spyc;     
+      $this->parsed = $this->spyc->load((string) $this);        
     
-    array_walk_recursive($this->parsed, array($this, 'parseMarkdown'));  
+      array_walk_recursive($this->parsed, array($this, 'parseMarkdown'));   
+    } 
+    else
+      return $this;
     return $this;
   }     
   
@@ -242,8 +251,8 @@ class Comment
    */
   public function parseDesc()
   {     
-    $this->title .= trim($this->getLine());
-    $this->line++;   
+    $this->title .= trim($this->getLine());    
+    $this->line++;  
     
     while($this->consumeUntilYAML(false) && $this->line < count($this->docblock) - 1) {  
       $this->desc .= trim($this->getLine()) . "\n"; 

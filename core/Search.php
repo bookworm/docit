@@ -9,7 +9,7 @@ namespace docit\core;
  * author:      Ken Erickson http://kerickson.me
  * copyright:   Copyright 2009 - 2011 Design BreakDown, LLC.
  * license:     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2    
- * inspired_by: https://github.com/samwho/PHP-Docgen
+ * based_on: https://github.com/samwho/PHP-Docgen
  */
 class Search
 {  
@@ -35,10 +35,13 @@ class Search
    * 
    * Return: Array. The classes found.
    */
-  public function findClasses($path) 
-  {
+  public function findClasses($path=null) 
+  {                      
+    $docit = Docit::getInstance();
+    if(is_null($path)) $path = $docit->config->dir;
+    
     $newClasses = array();  
-    $files = $this->rglob('*.php', 0, $docit->config->dir); 
+    $files = $this->rglob('*.php', 0, $path);
     
     foreach($files as $file) 
     {
@@ -83,19 +86,23 @@ class Search
     } 
     else
       return null;
-  }   
+  } 
   
+  public function getClassList() 
+  {
+    return $this->classList;
+  } 
   
   public function rglob($pattern='*', $flags = 0, $path=false)
-  {
+  {                              
     if(!$path) $path = dirname($pattern). DIRECTORY_SEPARATOR; 
     $pattern = basename($pattern);  
-    
+       
     $paths = glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
-    $files = glob($path.$pattern, $flags);   
+    $files = glob($path.$pattern, $flags);        
     
     foreach($paths as $path) {
-      $files = array_merge($files,rglob($pattern, $flags, $path));
+      $files = array_merge($files,$this->rglob($pattern, $flags, $path));
     }           
     
     return $files; 

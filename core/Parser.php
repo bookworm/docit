@@ -10,7 +10,7 @@ use docit\core;
  * author:      Ken Erickson http://kerickson.me
  * copyright:   Copyright 2009 - 2011 Design BreakDown, LLC.
  * license:     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2    
- * inspired_by: https://github.com/samwho/PHP-Docgen
+ * based_on:    https://github.com/samwho/PHP-Docgen
  */
 class Parser
 {
@@ -48,7 +48,7 @@ class Parser
   public function addClasses(array $classes) 
   {
     $this->classList = array_merge($this->classList, $classes);
-    $this->loadClasses();  
+    $this->loadClasses();
     return $this;       
   }
   
@@ -76,7 +76,7 @@ class Parser
    */ 
   public function getClassInfo($className) 
   {
-    $class = new \docit\abstractions\Klass($className);
+    $class = new \docit\parser\Klass($className);
     return $class->templateInfo();  
   }
   
@@ -101,13 +101,7 @@ class Parser
   
   public function parseClasses($value='')
   {
-    $this->getAllClassInfo();
-    foreach($this->parsed as $className => $class)
-    {
-      $klass = new \docit\abastractions\Klass();     
-      $klass->setProps($class->templateInfo());  
-      
-    }
+    return $this->getAllClassInfo();
   }
   
 // ------------------------------------------------------------------------

@@ -2,8 +2,6 @@
 
 namespace docit\core;
 use docit\core; 
-
-require "LazyLoader.php";
  
 /**
  * Core class.
@@ -12,7 +10,7 @@ require "LazyLoader.php";
  * author:      Ken Erickson http://kerickson.me
  * copyright:   Copyright 2009 - 2011 Design BreakDown, LLC.
  * license:     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2    
- * inspired_by: https://github.com/samwho/PHP-Docgen
+ * based_on:    https://github.com/samwho/PHP-Docgen
  */
 class Docit
 { 
@@ -28,29 +26,31 @@ class Docit
    *
    * type: Object
    */
-  var $search;
+  public $search;
 
   /** 
    * Holds an instance of `\docit\core\Render`
    * 
    * type: Object, \docit\core\Parser
    */
-  var $parser;       
+  public $parser;       
   
   /** 
    * Holds an instance of `\docit\core\Render`
    * 
    * type: Object, \docit\core\Render
    */
-  var $renderer;         
-  
+  public $renderer;         
   
   /** 
    * Holds an instance of `\docit\core\Config`
    * 
    * type: Object, \docit\core\Config
    */
-  var $config;           
+  public $config;       
+  
+  public $configPath;  
+  public $init = false;  
     
   /**
    * Constructor.
@@ -59,16 +59,21 @@ class Docit
    */   
   public function __construct()
   {                     
-    $this->search = new Search();
-    $this->parser = new Parser();  
-    $this->config = new Config();   
-    
-    # $renderer = $this->baseDir . DS . 'renderers' . DS . $this->config->renderer . DS . $this->config->renderer . '.php';
-    # require_once $renderer;
-    # $renderClassName = $this->config->renderer;   
-    # 
-    # $this->renderer =  new $renderClassName();
-  }  
+  }                    
+  
+  public function init()
+  {    
+    if($this->init == false) 
+    {           
+      $this->search = new Search();
+      $this->parser = new Parser();  
+      $this->config = Config::getInstance();   
+      
+      $this->init = true;
+    }  
+    else
+      return true;
+  }
   
   public static function getInstance() 
   {               

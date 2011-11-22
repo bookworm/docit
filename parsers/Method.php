@@ -1,6 +1,7 @@
 <?php 
-namespace docit;
-use docit;
+namespace docit\parser;
+use docit\core;            
+use docit\parser;
 use ReflectionMethod; 
 
 /**
@@ -10,7 +11,7 @@ use ReflectionMethod;
  * author:      Ken Erickson http://kerickson.me
  * copyright:   Copyright 2009 - 2011 Design BreakDown, LLC.
  * license:     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2    
- * inspired_by: https://github.com/samwho/PHP-Docgen
+ * based_on: https://github.com/samwho/PHP-Docgen
  */
 class Method extends ReflectionMethod  
 {
@@ -33,7 +34,7 @@ class Method extends ReflectionMethod
   public function __construct($class, $method)
   {          
     parent::__construct($class, $method);    
-    $this->docblock = new CommentParser(parent::getDocComment()); 
+    $this->docblock = new Comment(parent::getDocComment()); 
   }     
    
 // ------------------------------------------------------------------------
@@ -85,7 +86,7 @@ class Method extends ReflectionMethod
     foreach(parent::getParameters() as $parameter) 
     {
       $return[$parameter->name] =
-        new ParameterParser(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
+        new Parameter(array($this->getDeclaringClass()->getName(), $this->getName()), $parameter->getName());
     }
     return $return; 
   }     
@@ -128,31 +129,31 @@ class Method extends ReflectionMethod
   /**
    * Template Info.
    * 
-   * Return: Array
+   * Return: Object
    */ 
   public function templateInfo() 
   {
-    $info = array();  
+    $info = array();
+    $info['name'] = $this->getName(); 
+    # $info->short_nmae = $this->getShortName();   
+    # $info->source = $this->getSource();
     
-    $info["tags"]                      = $this->getDocTags();
-    $info["docblock"]                  = $this->getDocCommentWithoutTags();
-    $info["modifiers"]                 = $this->getModifierString();
-    $info["lines_of_code"]             = $this->linesOfCode();
-    $info["name"]                      = $this->getName();
-    $info["short_name"]                = $this->getShortName();
-    $info["returns_reference"]         = $this->returnsReference();
-    $info["no_of_parameters"]          = $this->getNumberOfParameters();
-    $info["no_of_required_parameters"] = $this->getNumberOfRequiredParameters();
-    $info['class_name']                = $this->getDeclaringClass()->getName();
-    $info['is_abstract']               = $this->isAbstract();
-    $info['is_constructor']            = $this->isConstructor();
-    $info['is_destructor']             = $this->isDestructor();
-    $info['is_final']                  = $this->isFinal();
-    $info['is_private']                = $this->isPrivate();
-    $info['is_protected']              = $this->isProtected();
-    $info['is_public']                 = $this->isPublic();
-    $info['is_static']                 = $this->isStatic();
-    $info['source']                    = $this->getSource();
+    # $info["tags"]                      = $this->docblock->parsed;
+    $info["docblock"]                  = $this->docblock->desc;
+    #$info["modifiers"]                 = $this->getModifierString();
+    #$info["lines_of_code"]             = $this->linesOfCode();
+    #$info["returns_reference"]         = $this->returnsReference();
+    #$info["no_of_parameters"]          = $this->getNumberOfParameters();
+    #$info["no_of_required_parameters"] = $this->getNumberOfRequiredParameters();
+    #$info['class_name']                = $this->getDeclaringClass()->getName();
+    #$info['is_abstract']               = $this->isAbstract();
+    #$info['is_constructor']            = $this->isConstructor();
+    #$info['is_destructor']             = $this->isDestructor();
+    #$info['is_final']                  = $this->isFinal();
+    #$info['is_private']                = $this->isPrivate();
+    #$info['is_protected']              = $this->isProtected();
+    #$info['is_public']                 = $this->isPublic();
+    #$info['is_static']                 = $this->isStatic();
     $info["parameters"]                = $this->getParametersTemplateInfo();
 
     return $info;   

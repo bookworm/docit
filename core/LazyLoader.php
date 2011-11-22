@@ -1,5 +1,11 @@
-<?php
-namespace docit\core;  
+<?php   
+
+namespace docit\core;   
+ 
+use docit\core;   
+
+if(!defined('DS'))
+  define('DS', DIRECTORY_SEPARATOR);
 
 /**
  * Lazy Loads Classes.
@@ -8,7 +14,7 @@ namespace docit\core;
  * author:      Ken Erickson http://kerickson.me
  * copyright:   Copyright 2009 - 2011 Design BreakDown, LLC.
  * license:     http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2    
- * inspired_by: https://github.com/samwho/PHP-Docgen
+ * based_on:    https://github.com/samwho/PHP-Docgen
  */
 class LazyLoader 
 {    
@@ -20,7 +26,10 @@ class LazyLoader
   private static $paths = array(
     'lib',
     'core', 
-    'vendor/lib',
+    'vendor/lib',     
+    'parsers',
+    'util',
+    'renderers'
   );  
   
   /**
@@ -63,26 +72,14 @@ class LazyLoader
 
     foreach(self::$paths as $path) 
     {
-      $class = end(explode('\\', $class));
-      $pathToClass = $projectPath . $path . DS . $class . '.php';    
+      $class = end(explode('\\', $class));   
+      $pathToClass = $projectPath . $path . DS . $class . '.php';   
                                                                      
       if(file_exists($pathToClass)) {          
         require_once $pathToClass;
         return;  
       }
     }
-    
-    # $config = \docit\Config::getInstance(); 
-    # $docit  = \docit\Core::getInstance()
-    #   
-    # if($docit->running AND !$conifg->loadedFiles)    
-    # {
-    #   foreach(glob(rtrim($config->dir,"/") . DS . '*.php') as $filename) {
-    #     include_once($filename);
-    #   }
-    # }
-    # 
-    # $config->loadedFiles = true;
   }  
 }
 
