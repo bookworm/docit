@@ -213,7 +213,7 @@ class Comment
    */
   public function parse()
   {              
-    $docit = Docit::getInstance();
+    $docit = \docit\core\Docit::getInstance();
     if(empty($this->parsed))
     {                
       $this->parseDesc();       
